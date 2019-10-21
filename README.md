@@ -1,2 +1,2 @@
 # zetwerk-employees-assignment
-Full stack app for CRUD on an employee database.
+Full stack app for CRUDL on an employee database.
