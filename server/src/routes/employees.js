@@ -59,7 +59,10 @@ employeesRouter.put('/:employeeId', async (req, res, next) => {
     const employee = await Employee.findOneAndUpdate(
       { _id: req.params.employeeId },
       { name, dob, salary, skills, profileImage },
-      { omitUndefined: true }  // If a field is undefined, don't set it
+      {
+        omitUndefined: true,  // If a field is undefined, don't replace it
+        new: true
+      }
     )
     return res.json(employee)
   } catch (err) {
