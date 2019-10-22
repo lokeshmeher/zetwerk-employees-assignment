@@ -23,4 +23,4 @@ Run production server.
 ## Explore API
 Use below link to run the postman collection:
 
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2c942ee7d62882bb8277)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/c2956a9d6f16be12c34b)
