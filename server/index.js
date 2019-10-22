@@ -1,4 +1,6 @@
-if (process.env.NODE_ENV === 'development') import 'dotenv/config'
+if (process.env.NODE_ENV === 'development') {
+  import 'dotenv/config'
+}
 import mongoose from 'mongoose'
 import express from 'express'
 import cors from 'cors'
