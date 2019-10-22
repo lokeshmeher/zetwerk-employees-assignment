@@ -17,7 +17,7 @@ const employeeSchema = new mongoose.Schema({
     required: true
   },
   salary: {
-    type: mongoose.Decimal128,
+    type: mongoose.Types.Decimal128,
     required: true
   },
   skills: {
@@ -27,6 +27,19 @@ const employeeSchema = new mongoose.Schema({
   profileImage: {
     type: String,
     required: true
+  }
+}, {
+  // Options
+  collection: 'employees',
+  toJSON: {
+    versionKey: false,
+    // exclude version key (__v) from output
+    transform: (doc, ret, options) => {
+      delete ret._id;
+      ret.id = doc._id;
+      ret.salary = parseFloat(ret.salary);
+      return ret;
+    }
   }
 });
 employeeSchema.set('collection', 'employees');

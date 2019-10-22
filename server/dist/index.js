@@ -16,7 +16,9 @@ const mongoUrl = `mongodb+srv://primary:${process.env.MONGO_PASSWORD}@production
 
 _mongoose.default.connect(mongoUrl, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+  useCreateIndex: true
 });
 
 var app = (0, _express.default)();
