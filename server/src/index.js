@@ -6,7 +6,12 @@ import { employeesRouter } from './routes/employees'
 
 
 const mongoUrl = `mongodb+srv://primary:${process.env.MONGO_PASSWORD}@production-sp8hx.mongodb.net/db1?retryWrites=true&w=majority`
-mongoose.connect(mongoUrl, {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(mongoUrl, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+  useCreateIndex: true,
+})
 
 var app = express()
 

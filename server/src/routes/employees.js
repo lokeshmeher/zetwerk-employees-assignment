@@ -34,7 +34,7 @@ employeesRouter.post('/', async (req, res) => {
   try {
     if (dob) dob = DateTime.fromISO(dob).toJSDate()
     const employee = new Employee({ name, dob, salary, skills, profileImage })
-    await employee.save()
+    await employee.save()  // Does validation before saving
     return res.status(201).json(employee)
   } catch (err) {
     return res.status(400).send('Invalid request body')
@@ -43,19 +43,25 @@ employeesRouter.post('/', async (req, res) => {
 
 // get employee
 employeesRouter.get('/:employeeId', async (req, res) => {
+  const err404 = `No employee found for id '${req.params.employeeId}'`
+  
   try {
     const employee = await Employee.findById(req.params.employeeId)
+    
+    if (!employee) res.status(404).send(err404)
     return res.json(employee)
-  } catch (err) {
-    return res.status(404).send(`No employee found for id '${req.params.employeeId}'`)
+  } catch (error) {
+    return res.status(404).send(err404)
   }
 })
 
 // update employee
 employeesRouter.put('/:employeeId', async (req, res, next) => {
+  const err404 = `No employee found for id '${req.params.employeeId}'`
+  
   let { name, dob, salary, skills, profileImage } = req.body
-  if (dob) dob = DateTime.fromISO(dob).toJSDate()
   try {
+    if (dob) dob = DateTime.fromISO(dob).toJSDate()
     const employee = await Employee.findOneAndUpdate(
       { _id: req.params.employeeId },
       { name, dob, salary, skills, profileImage },
@@ -64,18 +70,24 @@ employeesRouter.put('/:employeeId', async (req, res, next) => {
         new: true
       }
     )
+    if (!employee) return res.status(404).send(err404)
     return res.json(employee)
-  } catch (err) {
+  } catch (error) {
+    if (error.name === 'CastError') return res.status(404).send(err404)
     return res.status(400).send('Invalid request body')
   }
 })
 
 // delete employee
 employeesRouter.delete('/:employeeId', async (req, res, next) => {
+  const err404 = `No employee found for id '${req.params.employeeId}'`
+  
   try {
-    const res = await Employee.deleteOne({ _id: req.params.employeeId })
-    return res.send(`Deleted employee with id '${req.params.employeeId}'`)
+    const result = await Employee.deleteOne({ _id: req.params.employeeId })
+    if (result.deletedCount)
+      return res.send(`Deleted employee with id '${req.params.employeeId}'`)
+    return res.status(404).send(err404)
   } catch (err) {
-    return res.status(400).send(`No employee found for id '${req.params.employeeId}'`)
+    return res.status(404).send(err404)
   }
 })
